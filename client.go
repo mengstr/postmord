@@ -16,11 +16,11 @@ const (
 )
 
 var DefaultOptions = &Options{
-	Locale:     "en",
+	Locale: "en",
 }
 
 type Options struct {
-	Locale     string
+	Locale string
 }
 
 type Client struct {
