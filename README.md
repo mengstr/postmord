@@ -23,7 +23,7 @@ func main() {
 }
 
 	// Output status
-	for _, shipment := range postmordResponse.Shipments {
+	for _, shipment := range postmordResponse.Tracking.Shipments {
 		fmt.Println(shipment.ShipmentID, shipment.StatusText)
 	}
 
