@@ -2,6 +2,10 @@
 A Go API wrapper for the PostNord API
 
 ## Example
+```bash
+$ go get github.com/antonjah/postmord
+```
+
 ```go
 package main
 
