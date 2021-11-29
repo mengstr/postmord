@@ -1,9 +1,9 @@
 # postmord
-A Go API wrapper for the PostNord API
+A Go API wrapper for the PostNord track and trace API
 
 ## Example
 ```bash
-$ go get github.com/antonjah/postmord
+$ go get -u github.com/antonjah/postmord
 ```
 
 ```go
@@ -12,26 +12,27 @@ package main
 import (
 	"fmt"
 	"github.com/antonjah/postmord"
-	"io/ioutil"
 )
 
 func main() {
-	c := postmord.NewClient("MyConsumerAPIKey", nil, postmord.DefaultOptions)
-	postmordResponse, err := c.FindByIdentifier("MyShipmentID")
+	client := postmord.NewClient("MyConsumerAPIKey", nil, postmord.DefaultOptions)
+	response, err := client.FindByIdentifier("MyShipmentID")
 	if err != nil {
-		panic(err)
-}
+		// handle error
+	}
 
-	// Output status
-	for _, shipment := range postmordResponse.Tracking.Shipments {
+	for _, shipment := range response.TrackingInformation.Shipments {
 		fmt.Println(shipment.ShipmentID, shipment.StatusText)
 	}
 
-	// Write to JSON/XML/YAML file
-	j, _ := postmordResponse.JSON()
-	if err := ioutil.WriteFile("MyShipments.json", j, 0755); err != nil {
-		panic(err)
-	}
+	// JSON
+	j, _ := response.JSON()
+
+	// YAML
+	y, _ := response.YAML()
+
+	// XML
+	x, _ := response.XML()
 }
 ```
 

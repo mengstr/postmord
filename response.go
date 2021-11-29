@@ -1,484 +1,310 @@
 package postmord
 
 import (
-	"encoding/json"
-	"encoding/xml"
-	"github.com/go-yaml/yaml"
+	"time"
 )
 
-// TODO: Extract structs from this monster
 type Response struct {
-	Tracking *struct {
-		CompositeFault *struct {
-			Faults []*struct {
-				FaultCode       string `json:"faultCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ExplanationText string `json:"explanationText,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ParamValues     []*struct {
-					Param string `json:"param,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"paramValues,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"faults,omitempty" yaml:",omitempty" xml:",omitempty"`
-		} `json:"compositeFault,omitempty" yaml:",omitempty" xml:",omitempty"`
-		Shipments []*struct {
-			ShipmentID                   string `json:"shipmentId,omitempty" yaml:",omitempty" xml:",omitempty"`
-			URI                          string `json:"uri,omitempty" yaml:",omitempty" xml:",omitempty"`
-			AssessedNumberOfItems        int    `json:"assessedNumberOfItems,omitempty" yaml:",omitempty" xml:",omitempty"`
-			CashOnDeliveryText           string `json:"cashOnDeliveryText,omitempty" yaml:",omitempty" xml:",omitempty"`
-			DeliveryDate                 string `json:"deliveryDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-			OriginEstimatedTimeOfArrival string `json:"originEstimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-			EstimatedTimeOfArrival       string `json:"estimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-			RealTimeOfArrival            string `json:"realTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-			RequestedDeliveryDate        string `json:"requestedDeliveryDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-			RequestedProductionDate      string `json:"requestedProductionDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-			NotificationPhoneNumber      string `json:"notificationPhoneNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-			NotificationCode             string `json:"notificationCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-			CustomerNumber               string `json:"customerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-			NumberOfPallets              string `json:"numberOfPallets,omitempty" yaml:",omitempty" xml:",omitempty"`
-			Service                      *struct {
-				Code          string `json:"code,omitempty" yaml:",omitempty" xml:",omitempty"`
-				SourceSystem  string `json:"sourceSystem,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Name          string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ArticleNumber string `json:"articleNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"service,omitempty" yaml:",omitempty" xml:",omitempty"`
-			Consignor *struct {
-				Name       string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Issuercode string `json:"issuercode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Customer   *struct {
-					ProductionCustomerNumber string `json:"productionCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					ExternalCustomerNumber   string `json:"externalCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					SapCustomerNumber        string `json:"sapCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"customer,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"consignor,omitempty" yaml:",omitempty" xml:",omitempty"`
-			Consignee *struct {
-				Name    string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Customer *struct {
-					ProductionCustomerNumber string `json:"productionCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					ExternalCustomerNumber   string `json:"externalCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					SapCustomerNumber        string `json:"sapCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"customer,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"consignee,omitempty" yaml:",omitempty" xml:",omitempty"`
-			OriginalShipper *struct {
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Name     string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Customer *struct {
-					ProductionCustomerNumber string `json:"productionCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					ExternalCustomerNumber   string `json:"externalCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					SapCustomerNumber        string `json:"sapCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"customer,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Issuercode string `json:"issuercode,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"originalShipper,omitempty" yaml:",omitempty" xml:",omitempty"`
-			FreightPayer *struct {
-				Name     string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Customer *struct {
-					ProductionCustomerNumber string `json:"productionCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					ExternalCustomerNumber   string `json:"externalCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-					SapCustomerNumber        string `json:"sapCustomerNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"customer,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"freightPayer,omitempty" yaml:",omitempty" xml:",omitempty"`
-			ReturnParty *struct {
-				Name    string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"returnParty,omitempty" yaml:",omitempty" xml:",omitempty"`
-			PickupParty *struct {
-				Name    string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"pickupParty,omitempty" yaml:",omitempty" xml:",omitempty"`
-			CollectionParty *struct {
-				Name    string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"collectionParty,omitempty" yaml:",omitempty" xml:",omitempty"`
-			NotificationParty *struct {
-				Name    string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"notificationParty,omitempty" yaml:",omitempty" xml:",omitempty"`
-			CashOnDelivery *struct {
-				Value    string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Currency string `json:"currency,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"cashOnDelivery,omitempty" yaml:",omitempty" xml:",omitempty"`
-			StatusText *struct {
-				Header                 string `json:"header,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Body                   string `json:"body,omitempty" yaml:",omitempty" xml:",omitempty"`
-				EstimatedTimeOfArrival string `json:"estimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"statusText,omitempty" yaml:",omitempty" xml:",omitempty"`
-			Status                 string `json:"status,omitempty" yaml:",omitempty" xml:",omitempty"`
-			RequestedDeliveryPoint *struct {
-				Name           string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Country        string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-				CountryCode    string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationDetail string `json:"locationDetail,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address        *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Coordinate []*struct {
-					SrID     string `json:"srId,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Northing string `json:"northing,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Easting  string `json:"easting,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"coordinate,omitempty" yaml:",omitempty" xml:",omitempty"`
-				OpeningHour []*struct {
-					OpenFrom  string `json:"openFrom,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenTo    string `json:"openTo,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenFrom2 string `json:"openFrom2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenTo2   string `json:"openTo2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Monday    bool   `json:"monday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Tuesday   bool   `json:"tuesday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Wednesday bool   `json:"wednesday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Thursday  bool   `json:"thursday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Friday    bool   `json:"friday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Saturday  bool   `json:"saturday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Sunday    bool   `json:"sunday,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"openingHour,omitempty" yaml:",omitempty" xml:",omitempty"`
-				DisplayName      string `json:"displayName,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationID       string `json:"locationId,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Postcode         string `json:"postcode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ServicePointType string `json:"servicePointType,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationType     string `json:"locationType,omitempty" yaml:",omitempty" xml:",omitempty"`
-				City             string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"requestedDeliveryPoint,omitempty" yaml:",omitempty" xml:",omitempty"`
-			DeliveryPoint *struct {
-				Name           string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Country        string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-				CountryCode    string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationDetail string `json:"locationDetail,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Address        *struct {
-					Street1     string `json:"street1,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Street2     string `json:"street2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					City        string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CountryCode string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Country     string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-					PostCode    string `json:"postCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"address,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Contact *struct {
-					ContactName string `json:"contactName,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Phone       string `json:"phone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					MobilePhone string `json:"mobilePhone,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Email       string `json:"email,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"contact,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Coordinate []*struct {
-					SrID     string `json:"srId,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Northing string `json:"northing,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Easting  string `json:"easting,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"coordinate,omitempty" yaml:",omitempty" xml:",omitempty"`
-				OpeningHour []*struct {
-					OpenFrom  string `json:"openFrom,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenTo    string `json:"openTo,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenFrom2 string `json:"openFrom2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					OpenTo2   string `json:"openTo2,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Monday    bool   `json:"monday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Tuesday   bool   `json:"tuesday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Wednesday bool   `json:"wednesday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Thursday  bool   `json:"thursday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Friday    bool   `json:"friday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Saturday  bool   `json:"saturday,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Sunday    bool   `json:"sunday,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"openingHour,omitempty" yaml:",omitempty" xml:",omitempty"`
-				DisplayName      string `json:"displayName,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationID       string `json:"locationId,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Postcode         string `json:"postcode,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ServicePointType string `json:"servicePointType,omitempty" yaml:",omitempty" xml:",omitempty"`
-				LocationType     string `json:"locationType,omitempty" yaml:",omitempty" xml:",omitempty"`
-				City             string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"deliveryPoint,omitempty" yaml:",omitempty" xml:",omitempty"`
-			PaymentAccount *struct {
-				AccountNumber string `json:"accountNumber,omitempty" yaml:",omitempty" xml:",omitempty"`
-				AccountType   string `json:"accountType,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Bic           string `json:"bic,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"paymentAccount,omitempty" yaml:",omitempty" xml:",omitempty"`
-			TotalWeight *struct {
-				Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"totalWeight,omitempty" yaml:",omitempty" xml:",omitempty"`
-			TotalVolume *struct {
-				Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"totalVolume,omitempty" yaml:",omitempty" xml:",omitempty"`
-			AssessedWeight *struct {
-				Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"assessedWeight,omitempty" yaml:",omitempty" xml:",omitempty"`
-			AssessedVolume *struct {
-				Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"assessedVolume,omitempty" yaml:",omitempty" xml:",omitempty"`
-			Items []*struct {
-				ItemID                       string `json:"itemId,omitempty" yaml:",omitempty" xml:",omitempty"`
-				OriginEstimatedTimeOfArrival string `json:"originEstimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-				EstimatedTimeOfArrival       string `json:"estimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-				RealTimeOfArrival            string `json:"realTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-				DropOffDate                  string `json:"dropOffDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-				DeliveryDate                 string `json:"deliveryDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ReturnDate                   string `json:"returnDate,omitempty" yaml:",omitempty" xml:",omitempty"`
-				TypeOfItem                   string `json:"typeOfItem,omitempty" yaml:",omitempty" xml:",omitempty"`
-				TypeOfItemName               string `json:"typeOfItemName,omitempty" yaml:",omitempty" xml:",omitempty"`
-				TypeOfItemActual             string `json:"typeOfItemActual,omitempty" yaml:",omitempty" xml:",omitempty"`
-				TypeOfItemActualName         string `json:"typeOfItemActualName,omitempty" yaml:",omitempty" xml:",omitempty"`
-				AdditionalInformation        string `json:"additionalInformation,omitempty" yaml:",omitempty" xml:",omitempty"`
-				NoItems                      string `json:"noItems,omitempty" yaml:",omitempty" xml:",omitempty"`
-				NumberOfPallets              string `json:"numberOfPallets,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Signature                    string `json:"signature,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Status                       string `json:"status,omitempty" yaml:",omitempty" xml:",omitempty"`
-				EventStatus                  string `json:"eventStatus,omitempty" yaml:",omitempty" xml:",omitempty"`
-				StatusText                   *struct {
-					Header                 string `json:"header,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Body                   string `json:"body,omitempty" yaml:",omitempty" xml:",omitempty"`
-					EstimatedTimeOfArrival string `json:"estimatedTimeOfArrival,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"statusText,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Acceptor *struct {
-					SignatureReference string `json:"signatureReference,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Name               string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"acceptor,omitempty" yaml:",omitempty" xml:",omitempty"`
-				StatedMeasurement *struct {
-					Weight *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"weight,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Length *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"length,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Height *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"height,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Width *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"width,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Volume *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"volume,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Compass *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"compass,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CompassPlusLength *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"compassPlusLength,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Bag *struct {
-						Bag bool `json:"bag,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"bag,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"statedMeasurement,omitempty" yaml:",omitempty" xml:",omitempty"`
-				AssessedMeasurement *struct {
-					Weight *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"weight,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Length *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"length,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Height *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"height,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Width *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"width,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Volume *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"volume,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Compass *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"compass,omitempty" yaml:",omitempty" xml:",omitempty"`
-					CompassPlusLength *struct {
-						Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Unit  string `json:"unit,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"compassPlusLength,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Bag *struct {
-						Bag bool `json:"bag,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"bag,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"assessedMeasurement,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Events []*struct {
-					EventTime        string `json:"eventTime,omitempty" yaml:",omitempty" xml:",omitempty"`
-					EventCode        string `json:"eventCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Status           string `json:"status,omitempty" yaml:",omitempty" xml:",omitempty"`
-					EventDescription string `json:"eventDescription,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Location         *struct {
-						LocationID       string `json:"locationId,omitempty" yaml:",omitempty" xml:",omitempty"`
-						DisplayName      string `json:"displayName,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Name             string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-						CountryCode      string `json:"countryCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Country          string `json:"country,omitempty" yaml:",omitempty" xml:",omitempty"`
-						Postcode         string `json:"postcode,omitempty" yaml:",omitempty" xml:",omitempty"`
-						City             string `json:"city,omitempty" yaml:",omitempty" xml:",omitempty"`
-						ServicePointType string `json:"servicePointType,omitempty" yaml:",omitempty" xml:",omitempty"`
-						LocationType     string `json:"locationType,omitempty" yaml:",omitempty" xml:",omitempty"`
-					} `json:"location,omitempty" yaml:",omitempty" xml:",omitempty"`
-					LocalEventCode string `json:"localEventCode,omitempty" yaml:",omitempty" xml:",omitempty"`
-					ScanUserID     string `json:"scanUserId,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"events,omitempty" yaml:",omitempty" xml:",omitempty"`
-				References []*struct {
-					Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Type  string `json:"type,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Name  string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"references,omitempty" yaml:",omitempty" xml:",omitempty"`
-				ItemRefID []*struct {
-					ReferenceID string `json:"referenceId,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Type        string `json:"type,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"itemRefId" yaml:",omitempty" xml:",omitempty"`
-				FreeText []*struct {
-					Text string `json:"text,omitempty" yaml:",omitempty" xml:",omitempty"`
-					Type string `json:"type,omitempty" yaml:",omitempty" xml:",omitempty"`
-				} `json:"freeText" yaml:",omitempty" xml:",omitempty"`
-			} `json:"items,omitempty" yaml:",omitempty" xml:",omitempty"`
-			AdditionalServices []*struct {
-				Code         string `json:"code,omitempty" yaml:",omitempty" xml:",omitempty"`
-				SourceSystem string `json:"sourceSystem,omitempty" yaml:",omitempty" xml:",omitempty"`
-				NameKey      string `json:"nameKey,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Name         string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"additionalServices,omitempty" yaml:",omitempty" xml:",omitempty"`
-			SplitStatuses []struct {
-				NoItemsWithStatus string `json:"noItemsWithStatus,omitempty" yaml:",omitempty" xml:",omitempty"`
-				NoItems           string `json:"noItems,omitempty" yaml:",omitempty" xml:",omitempty"`
-				StatusDescription string `json:"statusDescription,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Status            string `json:"status,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"splitStatuses" yaml:",omitempty" xml:",omitempty"`
-			ShipmentReferences []*struct {
-				Value string `json:"value,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Type  string `json:"type,omitempty" yaml:",omitempty" xml:",omitempty"`
-				Name  string `json:"name,omitempty" yaml:",omitempty" xml:",omitempty"`
-			} `json:"shipmentReferences,omitempty" yaml:",omitempty" xml:",omitempty"`
-		} `json:"shipments,omitempty" yaml:",omitempty" xml:",omitempty"`
-	} `json:"trackingInformationResponse,omitempty" yaml:",omitempty" xml:",omitempty"`
+	TrackingInformation TrackingInformation `json:"TrackingInformationResponse"`
 }
 
-func (r *Response) JSON() ([]byte, error) {
-	b, err := json.MarshalIndent(r, "", "  ")
-	if err != nil {
-		return []byte{}, err
-	}
-
-	return b, nil
+type ParamValues struct {
+	Param string `json:"param"`
+	Value string `json:"value"`
 }
 
-func (r *Response) YAML() ([]byte, error) {
-	b, err := yaml.Marshal(r)
-	if err != nil {
-		return []byte{}, err
-	}
-
-	return b, nil
+type Faults struct {
+	FaultCode       string        `json:"faultCode"`
+	ExplanationText string        `json:"explanationText"`
+	ParamValues     []ParamValues `json:"paramValues"`
 }
 
-func (r *Response) XML() ([]byte, error) {
-	b, err := xml.MarshalIndent(r, "", "  ")
-	if err != nil {
-		return []byte{}, err
-	}
+type CompositeFault struct {
+	Faults []Faults `json:"faults"`
+}
 
-	return b, nil
+type Service struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+type Address struct {
+	Street1     string `json:"street1"`
+	Street2     string `json:"street2"`
+	City        string `json:"city"`
+	CountryCode string `json:"countryCode"`
+	Country     string `json:"country"`
+	PostCode    string `json:"postCode"`
+}
+
+type Consignor struct {
+	Name       string  `json:"name"`
+	Issuercode string  `json:"issuercode"`
+	Address    Address `json:"address"`
+}
+
+type Consignee struct {
+	Name    string  `json:"name"`
+	Address Address `json:"address"`
+}
+
+type Contact struct {
+	ContactName string `json:"contactName"`
+	Phone       string `json:"phone"`
+	MobilePhone string `json:"mobilePhone"`
+	Email       string `json:"email"`
+}
+
+type ReturnParty struct {
+	Name    string  `json:"name"`
+	Address Address `json:"address"`
+	Contact Contact `json:"contact"`
+}
+
+type PickupParty struct {
+	Name    string  `json:"name"`
+	Address Address `json:"address"`
+	Contact Contact `json:"contact"`
+}
+
+type CollectionParty struct {
+	Name    string  `json:"name"`
+	Address Address `json:"address"`
+	Contact Contact `json:"contact"`
+}
+
+type StatusText struct {
+	Header                 string `json:"header"`
+	Body                   string `json:"body"`
+	EstimatedTimeOfArrival string `json:"estimatedTimeOfArrival"`
+}
+
+type Coordinate struct {
+	SrID     string `json:"srId"`
+	Northing string `json:"northing"`
+	Easting  string `json:"easting"`
+}
+
+type OpeningHour struct {
+	OpenFrom  string `json:"openFrom"`
+	OpenTo    string `json:"openTo"`
+	OpenFrom2 string `json:"openFrom2"`
+	OpenTo2   string `json:"openTo2"`
+	Monday    bool   `json:"monday"`
+	Tuesday   bool   `json:"tuesday"`
+	Wednesday bool   `json:"wednesday"`
+	Thursday  bool   `json:"thursday"`
+	Friday    bool   `json:"friday"`
+	Saturday  bool   `json:"saturday"`
+	Sunday    bool   `json:"sunday"`
+}
+
+type DeliveryPoint struct {
+	Name             string        `json:"name"`
+	LocationDetail   string        `json:"locationDetail"`
+	Address          Address       `json:"address"`
+	Contact          Contact       `json:"contact"`
+	Coordinate       []Coordinate  `json:"coordinate"`
+	OpeningHour      []OpeningHour `json:"openingHour"`
+	DisplayName      string        `json:"displayName"`
+	LocationID       string        `json:"locationId"`
+	ServicePointType string        `json:"servicePointType"`
+}
+
+type DestinationDeliveryPoint struct {
+	Name             string        `json:"name"`
+	LocationDetail   string        `json:"locationDetail"`
+	Address          Address       `json:"address"`
+	Contact          Contact       `json:"contact"`
+	Coordinate       []Coordinate  `json:"coordinate"`
+	OpeningHour      []OpeningHour `json:"openingHour"`
+	DisplayName      string        `json:"displayName"`
+	LocationID       string        `json:"locationId"`
+	ServicePointType string        `json:"servicePointType"`
+}
+
+type TotalWeight struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type TotalVolume struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type AssessedWeight struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type AssessedVolume struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type SplitStatuses struct {
+	NoItemsWithStatus int    `json:"noItemsWithStatus"`
+	NoItems           int    `json:"noItems"`
+	StatusDescription string `json:"statusDescription"`
+	Status            string `json:"status"`
+}
+
+type ShipmentReferences struct {
+	Value string `json:"value"`
+	Type  string `json:"type"`
+	Name  string `json:"name"`
+}
+
+type AdditionalServices struct {
+	Code      string `json:"code"`
+	GroupCode string `json:"groupCode"`
+	Name      string `json:"name"`
+}
+
+type Acceptor struct {
+	SignatureReference string `json:"signatureReference"`
+	Name               string `json:"name"`
+}
+
+type Weight struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type Length struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type Height struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type Width struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type Volume struct {
+	Value string `json:"value"`
+	Unit  string `json:"unit"`
+}
+
+type StatedMeasurement struct {
+	Weight Weight `json:"weight"`
+	Length Length `json:"length"`
+	Height Height `json:"height"`
+	Width  Width  `json:"width"`
+	Volume Volume `json:"volume"`
+}
+
+type AssessedMeasurement struct {
+	Weight Weight `json:"weight"`
+	Length Length `json:"length"`
+	Height Height `json:"height"`
+	Width  Width  `json:"width"`
+	Volume Volume `json:"volume"`
+}
+
+type Location struct {
+	Name         string `json:"name"`
+	CountryCode  string `json:"countryCode"`
+	Country      string `json:"country"`
+	LocationID   string `json:"locationId"`
+	DisplayName  string `json:"displayName"`
+	Postcode     string `json:"postcode"`
+	City         string `json:"city"`
+	LocationType string `json:"locationType"`
+}
+
+type GeoLocation struct {
+	GeoNorthing        int    `json:"geoNorthing"`
+	GeoEasting         int    `json:"geoEasting"`
+	GeoReferenceSystem string `json:"geoReferenceSystem"`
+	GeoPostalCode      string `json:"geoPostalCode"`
+	GeoCity            string `json:"geoCity"`
+	GeoCountryCode     string `json:"geoCountryCode"`
+}
+
+type Events struct {
+	EventTime          time.Time   `json:"eventTime"`
+	EventCode          string      `json:"eventCode"`
+	Location           Location    `json:"location"`
+	GeoLocation        GeoLocation `json:"geoLocation"`
+	Status             string      `json:"status"`
+	EventDescription   string      `json:"eventDescription"`
+	LocalDeviationDode string      `json:"localDeviationDode"`
+}
+
+type References struct {
+	Value string `json:"value"`
+	Type  string `json:"type"`
+	Name  string `json:"name"`
+}
+
+type FreeText struct {
+	Text string `json:"text"`
+	Type string `json:"type"`
+}
+
+type Items struct {
+	ItemID                 string              `json:"itemId"`
+	EstimatedTimeOfArrival time.Time           `json:"estimatedTimeOfArrival"`
+	DropOffDate            time.Time           `json:"dropOffDate"`
+	DeliveryDate           time.Time           `json:"deliveryDate"`
+	ReturnDate             time.Time           `json:"returnDate"`
+	TypeOfItem             string              `json:"typeOfItem"`
+	TypeOfItemName         string              `json:"typeOfItemName"`
+	TypeOfItemActual       string              `json:"typeOfItemActual"`
+	TypeOfItemActualName   string              `json:"typeOfItemActualName"`
+	AdditionalInformation  string              `json:"additionalInformation"`
+	NoItems                int                 `json:"noItems"`
+	NumberOfPallets        string              `json:"numberOfPallets"`
+	Status                 string              `json:"status"`
+	StatusText             StatusText          `json:"statusText"`
+	Acceptor               Acceptor            `json:"acceptor"`
+	StatedMeasurement      StatedMeasurement   `json:"statedMeasurement"`
+	AssessedMeasurement    AssessedMeasurement `json:"assessedMeasurement"`
+	Events                 []Events            `json:"events"`
+	References             []References        `json:"references"`
+	PreviousItemStates     []string            `json:"previousItemStates"`
+	FreeText               []FreeText          `json:"freeText"`
+}
+
+type Shipments struct {
+	ShipmentID               string                   `json:"shipmentId"`
+	URI                      string                   `json:"uri"`
+	AssessedNumberOfItems    int                      `json:"assessedNumberOfItems"`
+	CashOnDeliveryText       string                   `json:"cashOnDeliveryText"`
+	DeliveryDate             time.Time                `json:"deliveryDate"`
+	ReturnDate               time.Time                `json:"returnDate"`
+	EstimatedTimeOfArrival   time.Time                `json:"estimatedTimeOfArrival"`
+	NumberOfPallets          string                   `json:"numberOfPallets"`
+	FlexChangePossible       bool                     `json:"flexChangePossible"`
+	Service                  Service                  `json:"service"`
+	Consignor                Consignor                `json:"consignor"`
+	Consignee                Consignee                `json:"consignee"`
+	ReturnParty              ReturnParty              `json:"returnParty"`
+	PickupParty              PickupParty              `json:"pickupParty"`
+	CollectionParty          CollectionParty          `json:"collectionParty"`
+	StatusText               StatusText               `json:"statusText"`
+	Status                   string                   `json:"status"`
+	DeliveryPoint            DeliveryPoint            `json:"deliveryPoint"`
+	DestinationDeliveryPoint DestinationDeliveryPoint `json:"destinationDeliveryPoint"`
+	TotalWeight              TotalWeight              `json:"totalWeight"`
+	TotalVolume              TotalVolume              `json:"totalVolume"`
+	AssessedWeight           AssessedWeight           `json:"assessedWeight"`
+	AssessedVolume           AssessedVolume           `json:"assessedVolume"`
+	SplitStatuses            []SplitStatuses          `json:"splitStatuses"`
+	ShipmentReferences       []ShipmentReferences     `json:"shipmentReferences"`
+	AdditionalServices       []AdditionalServices     `json:"additionalServices"`
+	HarmonizedVersion        int                      `json:"harmonizedVersion"`
+	Items                    []Items                  `json:"items"`
+}
+
+type TrackingInformation struct {
+	CompositeFault CompositeFault `json:"compositeFault"`
+	Shipments      []Shipments    `json:"shipments"`
 }
