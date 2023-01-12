@@ -1,7 +1,7 @@
 package postmord
 
 import (
-	"time"
+	"cloud.google.com/go/civil"
 )
 
 type Response struct {
@@ -229,13 +229,13 @@ type GeoLocation struct {
 }
 
 type Events struct {
-	EventTime          time.Time   `json:"eventTime"`
-	EventCode          string      `json:"eventCode"`
-	Location           Location    `json:"location"`
-	GeoLocation        GeoLocation `json:"geoLocation"`
-	Status             string      `json:"status"`
-	EventDescription   string      `json:"eventDescription"`
-	LocalDeviationDode string      `json:"localDeviationDode"`
+	EventTime          civil.DateTime `json:"eventTime"`
+	EventCode          string         `json:"eventCode"`
+	Location           Location       `json:"location"`
+	GeoLocation        GeoLocation    `json:"geoLocation"`
+	Status             string         `json:"status"`
+	EventDescription   string         `json:"eventDescription"`
+	LocalDeviationDode string         `json:"localDeviationDode"`
 }
 
 type References struct {
@@ -251,10 +251,10 @@ type FreeText struct {
 
 type Items struct {
 	ItemID                 string              `json:"itemId"`
-	EstimatedTimeOfArrival time.Time           `json:"estimatedTimeOfArrival"`
-	DropOffDate            time.Time           `json:"dropOffDate"`
-	DeliveryDate           time.Time           `json:"deliveryDate"`
-	ReturnDate             time.Time           `json:"returnDate"`
+	EstimatedTimeOfArrival civil.DateTime      `json:"estimatedTimeOfArrival"`
+	DropOffDate            civil.DateTime      `json:"dropOffDate"`
+	DeliveryDate           civil.DateTime      `json:"deliveryDate"`
+	ReturnDate             civil.DateTime      `json:"returnDate"`
 	TypeOfItem             string              `json:"typeOfItem"`
 	TypeOfItemName         string              `json:"typeOfItemName"`
 	TypeOfItemActual       string              `json:"typeOfItemActual"`
@@ -278,9 +278,9 @@ type Shipments struct {
 	URI                      string                   `json:"uri"`
 	AssessedNumberOfItems    int                      `json:"assessedNumberOfItems"`
 	CashOnDeliveryText       string                   `json:"cashOnDeliveryText"`
-	DeliveryDate             time.Time                `json:"deliveryDate"`
-	ReturnDate               time.Time                `json:"returnDate"`
-	EstimatedTimeOfArrival   time.Time                `json:"estimatedTimeOfArrival"`
+	DeliveryDate             civil.DateTime           `json:"deliveryDate"`
+	ReturnDate               civil.DateTime           `json:"returnDate"`
+	EstimatedTimeOfArrival   civil.DateTime           `json:"estimatedTimeOfArrival"`
 	NumberOfPallets          string                   `json:"numberOfPallets"`
 	FlexChangePossible       bool                     `json:"flexChangePossible"`
 	Service                  Service                  `json:"service"`
