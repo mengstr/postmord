@@ -2,7 +2,7 @@ package postmord
 
 import "fmt"
 
-const (
+var (
 	identifierURL = baseURL + "findByIdentifier.json?apikey=%s&id=%s&locale=%s"
 	referenceURL  = baseURL + "findByReference.json?apikey=%s&customerNumber=%s&referenceValue=%s&locale=%s"
 )
